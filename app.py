@@ -2,47 +2,84 @@ import sys
 import time
 import random
 
-def main(file):
-    print(f'========== {file} ==========')
+def read_file(filename):
+    with open(filename, "r") as file:
+        arr = [line.strip() for line in file]
 
-    sam = []
-    ram = []
-
-    with open(file, "r") as f:
-        for line in f.readlines():
-            sam.append(line.replace('\n', ''))
-            ram.append(line.replace('\n', ''))
-
-            random.shuffle(ram)
-
-    while info := input("Word: "):
-        search_sam(sam, info)
-        search_ram(ram, info)
-        print()
+    return arr
 
 
-def search_sam(memory, info):
-    start = time.time_ns() / 1000000
+def main(filename):
+    sam = read_file(filename)
+    ram = read_file(filename)
+    random.shuffle(ram)
+
+    while user_input := input(":").split():
+        command = user_input[0]
+
+        if (command == "search"):
+            try:
+                data = user_input[1]
+            except:
+                data = input("Data to search: ")
+
+            sequential_access_time = sequential_access(sam, data)
+            random_access_time = random_access(ram, data)
+
+            print(f"Searching for: {data}")
+            print(f"Sequential Access Time: {sequential_access_time:.4f}ms")
+            print(f"Random Access Time: {random_access_time:.4f}ms")
+            print()
+        elif (command == "help"):
+            help()
+        elif (command == "quit"):
+            break
+
+    return 0
+            
+
+def help():
+    print("|- COMMANDS -------------------------|")
+    print("|                                    |")
+    print("| search <word>                      |")
+    print("|    search for word in the memory.  |")
+    print("|                                    |")
+    print("| quit                               |")
+    print("|    quit the program.               |")
+    print("|                                    |")
+    print("| help                               |")
+    print("|    print this help.                |")
+    print("|------------------------------------|")
+    print()
+
+def sequential_access(memory, info):
+    start = time.time()
     for row in memory:
         if (row == info):
             break
-    finish = time.time_ns() / 1000000
+    finish = time.time()
 
-    print("SAM time: %fms" % (finish - start))
+    return (finish - start) * 1000
 
 
-def search_ram(memory, info):
-    start = time.time_ns() / 1000000
-    addresses = [i for i in range(0, len(memory))]
-    random_address = random.choice(addresses)
-    addresses.remove(random_address)
+def random_access(memory, info):
+    address_table = [i for i in range(0, len(memory))]
+
+    start = time.time()
+
+    random_address = random.choice(address_table)
+    address_table.remove(random_address)
+    
     while not memory[random_address] == info:
-        random_address = random.choice(addresses)
-        addresses.remove(random_address)
+        random_address = random.choice(address_table)
+        address_table.remove(random_address)
 
-    finish = time.time_ns() / 1000000
-    print("RAM time: %fms" % (finish - start))
+    finish = time.time()
+
+    return (finish - start) * 1000
 
 
 if __name__ == "__main__":
+    print(f'============= {filename} =============')
+    print()
     main(sys.argv[1])
