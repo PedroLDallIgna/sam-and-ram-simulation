@@ -39,7 +39,6 @@ def main(filename):
             
 
 def help():
-    print("COMMANDS")
     print("|- COMMANDS -------------------------|")
     print("|                                    |")
     print("| search <word>                      |")
@@ -81,6 +80,6 @@ def random_access(memory, info):
 
 
 if __name__ == "__main__":
-    print(f'============ {filename} ============')
+    print(f'============= {filename} =============')
     print()
     main(sys.argv[1])
