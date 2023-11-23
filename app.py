@@ -34,6 +34,10 @@ def main(filename):
             help()
         elif (command == "quit"):
             break
+        else:
+            print("COMMAND NOT FOUND")
+            help()
+            continue
 
     return 0
             
@@ -80,6 +84,7 @@ def random_access(memory, info):
 
 
 if __name__ == "__main__":
+    filename = sys.argv[1]
     print(f'============= {filename} =============')
     print()
-    main(sys.argv[1])
+    main(filename)
