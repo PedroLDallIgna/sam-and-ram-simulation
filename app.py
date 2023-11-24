@@ -23,12 +23,13 @@ def main(filename):
             except:
                 data = input("Data to search: ")
 
-            sequential_access_time = sequential_access(sam, data)
-            random_access_time = random_access(ram, data)
-
             print(f"Searching for: {data}")
+            sequential_access_time = sequential_access(sam, data)
             print(f"Sequential Access Time: {sequential_access_time:.4f}ms")
+            random_access_time = random_access(ram, data)
             print(f"Random Access Time: {random_access_time:.4f}ms")
+
+            
             print()
         elif (command == "help"):
             help()
